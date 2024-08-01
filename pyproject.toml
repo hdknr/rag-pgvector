@@ -50,7 +50,7 @@ combine-as-imports = true
 section-order = [
     "future",
     "standard-library",
-    "django",
+    "fastapi",
     "third-party",
     "first-party",
     "local-folder",
