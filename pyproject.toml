@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "rag-pgvector"
+name = "pgrag"
 version = "0.1.0"
 description = ""
 authors = ["user.name <gmail@hdknr.com>"]
@@ -9,6 +9,11 @@ readme = "README.md"
 python = "^3.12"
 ruff = "^0.5.5"
 click = "^8.1.7"
+fastapi = "^0.115.0"
+sqlalchemy = "^2.0.35"
+pgvector = "^0.3.4"
+psycopg2-binary = "^2.9.9"
+python-dotenv = "^1.0.1"
 
 
 [build-system]
