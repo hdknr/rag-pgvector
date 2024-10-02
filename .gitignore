@@ -48,6 +48,8 @@ Thumbs.db
 *.mov
 *.wmv
 
+# ruff
+.ruff_cache
 
 # .env
 .env
