@@ -3,8 +3,9 @@ from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.dialects.postgresql import UUID
 from pgvector.sqlalchemy import Vector
-from sqlalchemy import String, JSON, Text
+from sqlalchemy import String, JSON, Text, Boolean
 from sqlalchemy.sql.schema import Column
+import os
 
 
 class Base(DeclarativeBase):
@@ -34,6 +35,9 @@ class BaseDocument(Base):
 
 class Document(BaseDocument):
     __tablename__ = "document"
-    __table_args__ = {"schema": "rag"}
-
+    # __table_args__ = {"schema": "rag"}
+    __table_args__ = {
+        "schema": os.getenv("SCHEMA")
+    }  # モデルがロードされる前に .env が反映されていること
     categories: Mapped[str] = mapped_column(String(256), nullable=True)
+    disabled: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
