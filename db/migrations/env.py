@@ -1,19 +1,21 @@
+from dotenv import load_dotenv
+
+# .env
+load_dotenv()
+
+
 from logging.config import fileConfig
 import os
-
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
 from alembic import context
-from dotenv import load_dotenv
 from pgrag.models import Base
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
 
-# .env
-load_dotenv()
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
@@ -59,10 +61,19 @@ def run_migrations_offline() -> None:
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
+        version_table_schema=os.getenv("SCHEMA"),
     )
 
     with context.begin_transaction():
         context.run_migrations()
+
+
+# exclude system table
+def include_name(name, type_, parent_names):
+    if type_ == "schema":
+        return name in [os.getenv("SCHEMA")]
+    else:
+        return True
 
 
 def run_migrations_online() -> None:
@@ -82,7 +93,14 @@ def run_migrations_online() -> None:
     )
 
     with connectable.connect() as connection:
-        context.configure(connection=connection, target_metadata=target_metadata)
+        context.configure(
+            connection=connection,
+            target_metadata=target_metadata,
+            dialect_opts={"paramstyle": "named"},
+            include_schemas=True,
+            include_name=include_name,
+            version_table_schema=os.getenv("SCHEMA"),
+        )
 
         with context.begin_transaction():
             context.run_migrations()
