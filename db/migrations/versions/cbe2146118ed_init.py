@@ -1,8 +1,8 @@
-"""create tables
+"""init
 
-Revision ID: 17ebafc47f45
+Revision ID: cbe2146118ed
 Revises: 
-Create Date: 2024-10-08 16:09:27.361231
+Create Date: 2024-10-08 19:35:35.792932
 
 """
 
@@ -14,7 +14,7 @@ import pgvector
 
 
 # revision identifiers, used by Alembic.
-revision: str = "17ebafc47f45"
+revision: str = "cbe2146118ed"
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
