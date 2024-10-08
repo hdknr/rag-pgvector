@@ -62,7 +62,7 @@ def setup_vector(ctx):
 @click.pass_context
 def create_schema(ctx):
     """スキーマ作成"""
-    params = Document.__table_args__
+    params = dict(schema=os.getenv("SCHEMA"))
     sql = """CREATE SCHEMA {schema};""".format(**params)
     execute_sql(ctx.obj["DATABASE_URL"], sql)
 
@@ -92,8 +92,11 @@ def create_table(ctx):
 def create_vector_index(ctx):
     """ベクトルフィールドにインデックス作成"""
     field = Document.get_vector_field()
+
     params = dict(
-        table_name=Document.__tablename__, field=field.name, **Document.__table_args__
+        schema=os.getenv("SCHEMA"),
+        table_name=Document.__tablename__,
+        field=field.name,
     )
     sql = "CREATE INDEX on {schema}.{table_name} USING hnsw ({field} vector_cosine_ops);".format(
         **params
@@ -106,7 +109,7 @@ def create_vector_index(ctx):
 @click.pass_context
 def grant_schema(ctx):
     """スキーマに許可"""
-    params = dict(username=os.getenv("ROLE_USER"), **Document.__table_args__)
+    params = dict(username=os.getenv("ROLE_USER"), schema=os.getenv("SCHEMA"))
     sql = """GRANT ALL ON SCHEMA {schema} to {username};""".format(**params)
     res = execute_sql(ctx.obj["DATABASE_URL"], sql)
     print(res)
@@ -117,9 +120,9 @@ def grant_schema(ctx):
 def grant_table(ctx):
     """テーブルに許可"""
     params = dict(
+        schema=os.getenv("SCHEMA"),
         table_name=Document.__tablename__,
         username=os.getenv("ROLE_USER"),
-        **Document.__table_args__,
     )
     sql = """GRANT ALL ON TABLE {schema}.{table_name} to {username};""".format(**params)
     res = execute_sql(ctx.obj["DATABASE_URL"], sql)
