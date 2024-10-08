@@ -1,10 +1,6 @@
 #!/usr/bin/env python
-import json
 import os
-import re
-import boto3
 import click
-from pydantic import BaseModel
 from pgrag.models import Document
 from sqlalchemy import create_engine
 from sqlalchemy.schema import CreateTable

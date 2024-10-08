@@ -12,7 +12,6 @@ class Base(DeclarativeBase):
 
 
 class BaseDocument(Base):
-
     __abstract__ = True
 
     id: Mapped[UUID] = mapped_column(
